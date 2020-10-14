@@ -1,0 +1,25 @@
+name: Scrape
+
+on:
+  schedule:
+    - cron: "23 8 * * *"
+
+jobs:
+  scrape-latest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2.0.0
+        with:
+          python-version: '3.7'
+      - name: Run Scraper
+        run: python scraper.py $(python -c "import datetime as dt; print((dt.datetime.now() - dt.timedelta(days=3)).date())")
+      # We should probably  include the date of the pull in the commit message
+      - name: Save results
+        run: |
+          git add data/
+          git commit -m "Add data"
+          git push
