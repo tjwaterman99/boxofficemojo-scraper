@@ -1,0 +1,33 @@
+name: Scrape
+
+on:
+  schedule:
+    - cron: "31 8 * * *"
+
+jobs:
+  scrape-latest:
+    runs-on: ubuntu-latest
+
+    env:
+        PGPASSWORD: postgres
+
+    services:
+      postgres:
+        image: postgres:11
+        env:
+            POSTGRES_PASSWORD: $PGPASSWORD
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2.0.0
+        with:
+          python-version: '3.7'
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Build
+        run: |
+          createdb $USER
+          createuser $USER -P $PGPASSWORD
+          psql -l
