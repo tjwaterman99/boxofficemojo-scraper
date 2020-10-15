@@ -14,8 +14,8 @@ jobs:
         image: postgres:11
         env:
             POSTGRES_PASSWORD: postgres
-            POSTGRES_USER: postgrs
-            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DATABASE: postgres
         ports:
             - 5432:5432
         options: >-
@@ -37,4 +37,4 @@ jobs:
           PGPASSWORD: postgres
         run: |
           env
-          psql -l --host localhost --port 5432 -d postgres --user postgres
+          PGPASSWORD=postgres psql --host localhost --port 5432 --username postgres --dbname postgres --list
