@@ -38,4 +38,4 @@ jobs:
       - name: Build
         run: |
           env
-          psql -l --host localhost --port 5432
+          PGPASSWORD=$PGPASSWORD psql -l --host localhost --port 5432
