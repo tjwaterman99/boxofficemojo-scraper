@@ -2,6 +2,7 @@ import os
 import pathlib
 import requests
 import fire
+import gzip
 
 
 class Scraper(object):
@@ -17,8 +18,8 @@ class Scraper(object):
         url = self.boxofficemojo_url_template.format(date=date)
         resp = requests.get(url)
         if resp.ok:
-            filename = self.data_dir / f"{date}.html"
-            with open(filename, 'wb')  as o:
+            filename = self.data_dir / f"{date}.html.gz"
+            with gzip.open(filename, 'wb')  as o:
                 o.write(resp.content)
             print(f"Okay: {date}")
         else:

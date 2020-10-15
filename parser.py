@@ -4,6 +4,7 @@ import fire
 import bs4
 import json
 import re
+import gzip
 
 
 class Parser(object):
@@ -18,10 +19,10 @@ class Parser(object):
         Print json objects for each record in the downloaded page
         """
 
-        filename = self.data_dir / f"{date}.html"
+        filename = self.data_dir / f"{date}.html.gz"
         if not os.path.exists(filename):
             raise ValueError(f"No downloaded page for {date}")
-        with open(filename, 'r') as f:
+        with gzip.open(filename, 'r') as f:
             data = f.read()
             soup = bs4.BeautifulSoup(data, features="html.parser")
             table_wrapper = soup.find(attrs={'id': 'table'})
