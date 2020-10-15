@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  schedule:
+    - cron: "31 8 * * *"
+  push:
+
+jobs:
+  build-latest:
+    runs-on: ubuntu-latest
+
+    env:
+        PGDATABASE: postgres
+        PGUSER: postgres
+        PGPASSWORD: postgres
+        PGPORT: 5432
+        PGHOST: localhost
+    services:
+      postgres:
+        image: postgres:11
+        env:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DATABASE: postgres
+        ports:
+            - 5432:5432
+        options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2.0.0
+        with:
+          python-version: '3.7'
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Build
+        run: |
+          psql -c "create schema raw;"
+          psql -f schema.sql
+          python parser.py parse 2020-10-01 | psql -c "copy raw.boxofficemojo_revenues (data) from stdin;"
