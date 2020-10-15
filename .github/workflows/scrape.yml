@@ -18,7 +18,7 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Run Scraper
-        run: python scraper.py $(python -c "import datetime as dt; print((dt.datetime.now() - dt.timedelta(days=3)).date())")
+        run: python scraper.py scrape $(python -c "import datetime as dt; print((dt.datetime.now() - dt.timedelta(days=3)).date())")
       # We should probably  include the date of the pull in the commit message
       - name: Save results
         run: |
