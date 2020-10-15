@@ -14,8 +14,8 @@ jobs:
         image: postgres:11
         env:
             POSTGRES_PASSWORD: postgres
-            POSTGRES_USER: $USER
-            POSTGRES_DB: $USER
+            POSTGRES_USER: postgrs
+            POSTGRES_DB: postgres
         ports:
             - 5432:5432
         options: >-
@@ -33,6 +33,8 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Build
+        env:
+          PGPASSWORD: postgres
         run: |
           env
-          PGPASSWORD=postgres psql -l --host localhost --port 5432 -d $USER
+          psql -l --host localhost --port 5432 -d postgres --user postgres
