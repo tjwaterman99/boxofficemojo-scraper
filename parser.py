@@ -5,6 +5,7 @@ import bs4
 import json
 import re
 import gzip
+import datetime
 
 
 class Parser(object):
@@ -14,9 +15,9 @@ class Parser(object):
     def format_header(self, header):
         return re.sub('[^0-9a-zA-Z]+', '', header.strip().replace(' ', '_').lower())
 
-    def parse(self, date):
+    def _parse_date(self, date):
         """
-        Print json objects for each record in the downloaded page
+        Parse a single downloaded page into a stream of JSON objects
         """
 
         filename = self.data_dir / f"{date}.html.gz"
@@ -36,6 +37,22 @@ class Parser(object):
                 parsed_data = dict(zip(headers, data))
                 parsed_data.update(date=date)
                 print(json.dumps(parsed_data))
+
+    def parse(self, start_date, end_date=None):
+        """
+        Print json objects  each record in the downloaded page
+        """
+        
+        if end_date is None:
+            self._parse_date(start_date)
+        else:
+            start = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
+            end = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
+            current = start
+            while current <= end:
+                self._parse_date(str(current))
+                current = current + datetime.timedelta(days=1)
+        
 
 
 if __name__  == "__main__":
