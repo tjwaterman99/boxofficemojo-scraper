@@ -9,13 +9,18 @@ jobs:
   build-latest:
     runs-on: ubuntu-latest
 
+    env:
+        POSTGRES_PASSWORD: $USER
+        POSTGRES_DATABASE: $USER
+        POSTGRES_USER: $USER
+        PGPASSWORD: $POSTGRES_PASSWORD
     services:
       postgres:
         image: postgres:11
         env:
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_USER: postgres
-            POSTGRES_DATABASE: postgres
+            POSTGRES_PASSWORD: $USER
+            POSTGRES_USER: $USER
+            POSTGRES_DATABASE: $USER
         ports:
             - 5432:5432
         options: >-
@@ -33,8 +38,6 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Build
-        env:
-          PGPASSWORD: postgres
         run: |
           env
-          PGPASSWORD=postgres psql --host localhost --port 5432 --username postgres --dbname postgres --list
+          psql --host localhost --port 5432 --username $POSTGRES_USER --dbname $POSTGRES_DATABASE --list
