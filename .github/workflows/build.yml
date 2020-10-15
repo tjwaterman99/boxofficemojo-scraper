@@ -10,17 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        POSTGRES_PASSWORD: $USER
-        POSTGRES_DATABASE: $USER
-        POSTGRES_USER: $USER
-        PGPASSWORD: $POSTGRES_PASSWORD
+        PGDATABASE: postgres
+        PGUSER: postgres
+        PGPASSWORD: postgres
+        PGPORT: 5432
+        PGHOST: localhost
     services:
       postgres:
         image: postgres:11
         env:
-            POSTGRES_PASSWORD: $USER
-            POSTGRES_USER: $USER
-            POSTGRES_DATABASE: $USER
+            POSTGRES_PASSWORD: $PGUSER
+            POSTGRES_USER: $PGPASSWORD
+            POSTGRES_DATABASE: $PGDATABASE
         ports:
             - 5432:5432
         options: >-
@@ -40,4 +41,4 @@ jobs:
       - name: Build
         run: |
           env
-          psql --host localhost --port 5432 --username $POSTGRES_USER --dbname $POSTGRES_DATABASE --list
+          psql --list
