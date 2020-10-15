@@ -42,3 +42,6 @@ jobs:
         run: |
           env
           psql --list
+          psql -c "create schema raw;"
+          psql -f schema.sql
+          python parser.py parse 2020-10-01 | psql -c "copy raw.boxofficemojo_revenues (data) from stdin;"
