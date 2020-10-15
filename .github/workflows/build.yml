@@ -6,7 +6,7 @@ on:
   push:
 
 jobs:
-  scrape-latest:
+  build-latest:
     runs-on: ubuntu-latest
 
     env:
@@ -17,7 +17,11 @@ jobs:
         image: postgres:11
         env:
             POSTGRES_PASSWORD: $PGPASSWORD
-
+        options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
