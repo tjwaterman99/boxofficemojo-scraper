@@ -18,15 +18,20 @@ jobs:
           python-version: '3.7'
       - name: Install requirements
         run: pip install -r requirements.txt
+      - name: Set env vars
+        run: |
+          echo "DATE=$(python -c 'import datetime as dt; print((dt.datetime.now() - dt.timedelta(days=3)).date())')" >> $GITHUB_ENV
       - name: Run Scraper
-        run: python scraper.py scrape $(python -c "import datetime as dt; print((dt.datetime.now() - dt.timedelta(days=3)).date())")
+        run: |
+          env
+          python scraper.py scrape $DATE
       # We should probably include the date of the pull in the commit message
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"        
           git add data/
-          git commit -m "Add data"
+          git commit -m "Add data $DATE"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
