@@ -3,7 +3,7 @@ name: Scrape
 on:
   schedule:
     - cron: "31 8 * * *"
-  on: push
+  push:
 
 jobs:
   scrape-latest:
