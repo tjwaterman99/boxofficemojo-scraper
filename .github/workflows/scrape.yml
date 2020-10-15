@@ -31,7 +31,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"        
           git add data/
-          git commit -m "Add data $DATE"
+          git commit -m "Add data for $DATE"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
