@@ -19,9 +19,9 @@ jobs:
       postgres:
         image: postgres:11
         env:
-            POSTGRES_PASSWORD: $PGUSER
-            POSTGRES_USER: $PGPASSWORD
-            POSTGRES_DATABASE: $PGDATABASE
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DATABASE: postgres
         ports:
             - 5432:5432
         options: >-
