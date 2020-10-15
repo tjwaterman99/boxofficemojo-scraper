@@ -1,4 +1,4 @@
-name: Scrape
+name: Build
 
 on:
   schedule:
