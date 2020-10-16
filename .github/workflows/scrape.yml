@@ -25,11 +25,13 @@ jobs:
         run: |
           env
           python scraper.py scrape $DATE
+          python parser.py parse $DATE >> parsed.json
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"        
           git add data/
+          git add parsed.json
           git commit -m "Add data for $DATE"
       - name: Push changes
         uses: ad-m/github-push-action@master
