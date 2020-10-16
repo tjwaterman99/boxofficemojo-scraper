@@ -1,0 +1,28 @@
+version: 2
+
+models:
+    - name: f_boxofficemojo_revenues__stg
+      columns:
+        - name: id
+          description: A unique identifier for each (day, title) combination
+          tests:
+            - unique
+            - not_null
+        - name: date
+          description: The date the film was in theatres
+          tests:
+            - not_null
+        - name: title
+          description: The title of the film
+          tests:
+            - not_null
+        - name: revenue
+          description: The amount of revenue the film earned on that day
+          tests:
+            - not_null
+        - name: theaters
+          description: The number of theatres the film was playing in on that day
+        - name: distributor
+          description: The company that distributed the film
+          tests:
+            - not_null
