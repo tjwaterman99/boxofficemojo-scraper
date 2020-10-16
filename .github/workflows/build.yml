@@ -40,8 +40,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Debug dbt
         run: dbt debug --profiles-dir ./.dbt --project-dir ./dbt
-      - name: Build
+      - name: Load data
         run: |
           psql -c "create schema raw;"
           psql -f schema.sql
           psql -c "\copy raw.boxofficemojo_revenues from $PWD/out.json"
+      - name: Build models
+        run: |
+          dbt run --project-dir $PWD/dbt --profiles-dir $PWD/.dbt
