@@ -1,0 +1,13 @@
+boxofficemojo:
+    target: prod
+    outputs:
+        prod:
+            type: postgres
+            threads: 8
+            user: "{{ env_var('PGUSER') }}"
+            password: "{{ env_var('PGPASSWORD') }}"
+            host: "{{ env_var('PGHOST') }}"
+            port: "{{ env_var('PGPORT') }}"
+            database: "{{ env_var('PGDATABASE') }}"
+            schema: public
+            
