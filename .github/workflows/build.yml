@@ -44,6 +44,8 @@ jobs:
       - name: Debug dbt
         run: |
           env
+          echo ${{ github.event_name }}
+          echo ${{ github.event }}
           dbt debug --profiles-dir ./.dbt --project-dir ./dbt
       - name: Load data
         run: |
@@ -61,6 +63,7 @@ jobs:
           psql -c "\copy f_boxofficemojo_revenues__stg to '$PWD/data/dumps/revenues_per_day.csv' CSV HEADER"
           gzip $PWD/data/dumps/*
       - name: Create Release
+        if: github.event_name == 'schedule'
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -71,6 +74,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Upload Release Asset
+        if: github.event_name == 'schedule'      
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
