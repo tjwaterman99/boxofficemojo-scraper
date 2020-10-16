@@ -38,8 +38,13 @@ jobs:
           python-version: '3.7'
       - name: Install requirements
         run: pip install -r requirements.txt
-      - name: Build
+      - name: Debug dbt
+        run: dbt debug --profiles-dir ./.dbt --project-dir ./dbt
+      - name: Load data
         run: |
           psql -c "create schema raw;"
           psql -f schema.sql
           psql -c "\copy raw.boxofficemojo_revenues from $PWD/out.json"
+      - name: Build models
+        run: |
+          dbt run --project-dir $PWD/dbt --profiles-dir $PWD/.dbt
