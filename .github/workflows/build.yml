@@ -39,7 +39,9 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Debug dbt
-        run: dbt debug --profiles-dir ./.dbt --project-dir ./dbt
+        run: |
+          env
+          dbt debug --profiles-dir ./.dbt --project-dir ./dbt
       - name: Load data
         run: |
           psql -c "create schema raw;"
@@ -48,3 +50,10 @@ jobs:
       - name: Build models
         run: |
           dbt run --project-dir $PWD/dbt --profiles-dir $PWD/.dbt
+      - name: Test models
+        run: |
+          dbt test --project-dir $PWD/dbt --profiles-dir $PWD/.dbt
+      - name: Dump models
+        run: |
+          psql -c "\copy f_boxofficemojo_revenues__stg to '$PWD/data/dumps/revenues_per_day.csv' CSV HEADER"
+          gzip $PWD/data/dumps/*
