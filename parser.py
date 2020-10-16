@@ -6,6 +6,7 @@ import json
 import re
 import gzip
 import datetime
+import threading
 
 
 class Parser(object):
@@ -36,7 +37,7 @@ class Parser(object):
                 data = [td.text.strip() for td in row.find_all('td')]
                 parsed_data = dict(zip(headers, data))
                 parsed_data.update(date=date)
-                print(json.dumps(parsed_data))
+                print(json.dumps(parsed_data), end='\n')
 
     def parse(self, start_date, end_date=None):
         """
@@ -52,7 +53,17 @@ class Parser(object):
             while current <= end:
                 self._parse_date(str(current))
                 current = current + datetime.timedelta(days=1)
-        
+    
+    # TODO: using threads here is broken, as sometimes The JSON objects
+    # sometimes aren't separated by newlines. I'm not sure why.
+    def parse_all(self):
+        """
+        Parse all files saved in the data/dates directory
+        """
+        for filepath in self.data_dir.iterdir():
+            date = filepath.name.replace('.html.gz', '')
+            self.parse(date)
+            # threading.Thread(target=self._parse_date, args=[date]).start()
 
 
 if __name__  == "__main__":
