@@ -14,7 +14,7 @@ Install the requirements.
 pip install -r requirements.txt
 ```
 
-Set the `PG` variables.
+Set the `PG` variables. These will be used by DBT during the build steps.
 
 ```
 export PGHOST=127.0.0.1
@@ -27,5 +27,6 @@ export PGDATABASE=postgres
 Create the schema on the postgres database.
 
 ```
+psql -c "create schema raw;"
 psql -f schema.sql
 ```
