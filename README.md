@@ -1,3 +1,22 @@
+# US Domestic box office film revenues
+
+This project publishes a daily export of box office revenues scraped from [Box Office Mojo](http://www.boxofficemojo.com). Each daily export contains all revenue data from January 1st, 2000 up to the current day.
+
+Data published for a specific day is available under the [releases tab](https://github.com/tjwaterman99/boxofficemojo-scraper/releases).
+
+To download the latest version of the raw dataset, you can use the following url.
+
+https://github.com/tjwaterman99/boxofficemojo-scraper/releases/latest/download/revenues_per_day.csv.gz
+
+For example:
+
+```python
+>>> import pandas as pd
+>>> url = 'https://github.com/tjwaterman99/boxofficemojo-scraper/releases/latest/download/revenues_per_day.csv.gz'
+>>> df = pd.read_csv(url, parse_dates=['date'])
+>>> df.groupby([df.date.dt.year, df.date.dt.month]).revenue.sum()
+```
+
 ## Development
 
 Development requires Python3.6+ and access to a postgres database.
