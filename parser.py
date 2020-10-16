@@ -6,7 +6,6 @@ import json
 import re
 import gzip
 import datetime
-import threading
 
 
 class Parser(object):
@@ -28,6 +27,8 @@ class Parser(object):
             data = f.read()
             soup = bs4.BeautifulSoup(data, features="html.parser")
             table_wrapper = soup.find(attrs={'id': 'table'})
+            if table_wrapper is None:
+                return
             table = table_wrapper.table
             rows = table.find_all('tr')
             header_row = rows[0]
@@ -54,19 +55,16 @@ class Parser(object):
                 self._parse_date(str(current))
                 current = current + datetime.timedelta(days=1)
     
-    # TODO: I'm not sure why threading doesn't provide any speedups. Maybe
-    # the bottleneck is how fast it can write to STDOUT? That seems surprising
     def parse_all(self):
         """
         Parse all files saved in the data/dates directory
         """
         for filepath in self.data_dir.iterdir():
             date = filepath.name.replace('.html.gz', '')
-            # self.parse(date)
             try:
-                threading.Thread(target=self._parse_date, args=[date]).start()
-            except AttributeError:
-                raise AttributeError(f"Failed parsing for {date}")
+                self.parse(date)
+            except:
+                raise AttributeError(f"Invalid parsing for {date}")
 
 
 if __name__  == "__main__":
