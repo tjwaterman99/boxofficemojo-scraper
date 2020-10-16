@@ -27,13 +27,18 @@ export PGDATABASE=postgres
 Create the schema on the postgres database.
 
 ```sh
+psql -c "create schema raw;"
 psql -f schema.sql
 ```
 
-### TODO: set up dbt_profiles
+Load the current data.
+
+```
+psql -c "\copy raw.boxofficemojo_revenues from $PWD/out.json
+```
 
 Build the dbt models.
 
 ```sh
-dbt run --project-dir $PWD/dbt
+dbt run --project-dir $PWD/dbt --profiles-dir $PWD/.dbt
 ```

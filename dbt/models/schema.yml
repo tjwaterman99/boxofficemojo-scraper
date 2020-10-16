@@ -1,5 +1,6 @@
 version: 2
 sources:
     - name: boxofficemojo
+      schema: raw
       tables:
-        - boxofficemojo_revenues
+        - name: boxofficemojo_revenues
