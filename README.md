@@ -27,7 +27,6 @@ export PGDATABASE=postgres
 Create the schema on the postgres database.
 
 ```sh
-psql -c "create schema raw;"
 psql -f schema.sql
 ```
 
