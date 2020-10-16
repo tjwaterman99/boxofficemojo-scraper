@@ -34,10 +34,10 @@ class Parser(object):
             data_rows = rows[1:]
             headers = [self.format_header(th.text) for th in header_row.find_all('th')]
             for row in data_rows:
-                data = [td.text.strip() for td in row.find_all('td')]
+                data = [td.text.strip().replace('"', '') for td in row.find_all('td')]
                 parsed_data = dict(zip(headers, data))
                 parsed_data.update(date=date)
-                print(json.dumps(parsed_data), end='\n')
+                print(json.dumps(parsed_data) + '\n', end='')
 
     def parse(self, start_date, end_date=None):
         """
@@ -54,16 +54,19 @@ class Parser(object):
                 self._parse_date(str(current))
                 current = current + datetime.timedelta(days=1)
     
-    # TODO: using threads here is broken, as sometimes The JSON objects
-    # sometimes aren't separated by newlines. I'm not sure why.
+    # TODO: I'm not sure why threading doesn't provide any speedups. Maybe
+    # the bottleneck is how fast it can write to STDOUT? That seems surprising
     def parse_all(self):
         """
         Parse all files saved in the data/dates directory
         """
         for filepath in self.data_dir.iterdir():
             date = filepath.name.replace('.html.gz', '')
-            self.parse(date)
-            # threading.Thread(target=self._parse_date, args=[date]).start()
+            # self.parse(date)
+            try:
+                threading.Thread(target=self._parse_date, args=[date]).start()
+            except AttributeError:
+                raise AttributeError(f"Failed parsing for {date}")
 
 
 if __name__  == "__main__":
