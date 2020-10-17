@@ -73,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.DATE }}
-          release_name: Release ${{ env.DATE }}
+          release_name: ${{ env.DATE }}
           draft: false
           prerelease: false
       - name: Upload Dataset
