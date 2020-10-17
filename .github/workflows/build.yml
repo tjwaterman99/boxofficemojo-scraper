@@ -64,7 +64,7 @@ jobs:
           gzip $PWD/data/dumps/*
       - name: Build charts
         run: |
-          python plotter.py
+          python plotter.py images/tracker.svg
       - name: Create Release
         if: github.event_name == 'schedule'
         id: create_release
@@ -87,14 +87,15 @@ jobs:
           asset_path: ./data/dumps/revenues_per_day.csv.gz
           asset_name: revenues_per_day.csv.gz
           asset_content_type: application/gzip
-      - name: Upload Tracker Chart
-        if: github.event_name == 'schedule'      
-        id: upload-tracker-chart 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # TODO: limit to scheduled events
+      - name: Commit images
+        run: |
+          git checkout images
+          git add images
+          git commit -m "Publish tracker for $DATE"
+      # TODO: limit to scheduled events
+      - name: Publish images changes
+        uses: ad-m/github-push-action@master
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./tracker.svg
-          asset_name: tracker.svg
-          asset_content_type: image/svg+xml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
