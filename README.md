@@ -1,3 +1,5 @@
+![US box office revenue tracker](https://github.com/tjwaterman99/boxofficemojo-scraper/blob/images/images/tracker.svg?raw=true)
+
 # US Domestic box office film revenues
 
 This project publishes a daily export of box office revenues scraped from [Box Office Mojo](http://www.boxofficemojo.com). Each daily export contains all revenue data from January 1st, 2000 up to the current day.
