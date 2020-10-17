@@ -90,6 +90,8 @@ jobs:
       # TODO: limit to scheduled events
       - name: Commit images
         run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git checkout images
           git add images
           git commit -m "Publish tracker for $DATE"
