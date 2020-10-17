@@ -51,7 +51,7 @@ jobs:
         run: |
           psql -c "create schema raw;"
           psql -f schema.sql
-          psql -c "\copy raw.boxofficemojo_revenues from $PWD/out.json"
+          psql -c "\copy raw.boxofficemojo_revenues from $PWD/parsed.json"
       - name: Build models
         run: |
           dbt run --project-dir $PWD/dbt --profiles-dir $PWD/.dbt

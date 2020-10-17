@@ -66,7 +66,7 @@ psql -f schema.sql
 Load the current data.
 
 ```
-psql -c "\copy raw.boxofficemojo_revenues from $PWD/out.json
+psql -c "\copy raw.boxofficemojo_revenues from $PWD/parsed.json
 ```
 
 Build the dbt models.
