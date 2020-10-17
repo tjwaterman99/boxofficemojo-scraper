@@ -11,11 +11,20 @@ https://github.com/tjwaterman99/boxofficemojo-scraper/releases/latest/download/r
 For example:
 
 ```python
->>> import pandas as pd
->>> url = 'https://github.com/tjwaterman99/boxofficemojo-scraper/releases/latest/download/revenues_per_day.csv.gz'
->>> df = pd.read_csv(url, parse_dates=['date'])
->>> df.groupby([df.date.dt.year, df.date.dt.month]).revenue.sum()
+import pandas as pd
+
+url = 'https://github.com/tjwaterman99/boxofficemojo-scraper/releases/latest/download/revenues_per_day.csv.gz'
+df = pd.read_csv(url, parse_dates=['date'], index_col='id')
+df.head()
 ```
+
+| id                                   | date                | title         |   revenue |   theaters | distributor                         |
+|:-------------------------------------|:--------------------|:--------------|----------:|-----------:|:------------------------------------|
+| 362a6861-2040-4257-b414-b932f5c69f10 | 2018-03-08 00:00:00 | Black Panther |   4251525 |       4084 | Walt Disney Studios Motion Pictures |
+| 25320541-0e30-e62b-2573-284863c73e4a | 2018-03-08 00:00:00 | Red Sparrow   |   1270235 |       3056 | Twentieth Century Fox               |
+| 08f98020-cf73-de6b-4803-2213649f9ea0 | 2018-03-08 00:00:00 | Game Night    |    931272 |       3502 | Warner Bros.                        |
+| 4a9c0497-0a38-540f-30b2-a06d16dfa784 | 2018-03-08 00:00:00 | Death Wish    |    860755 |       2847 | Metro-Goldwyn-Mayer (MGM)           |
+| e7986901-67fc-537d-9407-c3fc4c7a2faf | 2018-03-08 00:00:00 | Peter Rabbit  |    620538 |       3607 | Sony Pictures Entertainment (SPE)   |
 
 ## Development
 
