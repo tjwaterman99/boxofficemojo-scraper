@@ -4,3 +4,4 @@ bs4
 dbt==0.17
 pandas
 matplotlib
+sqlalchemy
