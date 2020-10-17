@@ -62,6 +62,9 @@ jobs:
         run: |
           psql -c "\copy f_boxofficemojo_revenues__stg to '$PWD/data/dumps/revenues_per_day.csv' CSV HEADER"
           gzip $PWD/data/dumps/*
+      - name: Build charts
+        run: |
+          python plotter.py
       - name: Create Release
         if: github.event_name == 'schedule'
         id: create_release
@@ -73,14 +76,25 @@ jobs:
           release_name: Release ${{ env.DATE }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
+      - name: Upload Dataset
         if: github.event_name == 'schedule'      
-        id: upload-release-asset 
+        id: upload-dataset 
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./data/dumps/revenues_per_day.csv.gz
           asset_name: revenues_per_day.csv.gz
-          asset_content_type: application/gzip        
+          asset_content_type: application/gzip
+      - name: Upload Tracker Chart
+        if: github.event_name == 'schedule'      
+        id: upload-tracker-chart 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./tracker.svg
+          asset_name: tracker.svg
+          asset_content_type: image/svg+xml
