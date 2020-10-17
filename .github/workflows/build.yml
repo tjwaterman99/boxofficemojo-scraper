@@ -87,8 +87,8 @@ jobs:
           asset_path: ./data/dumps/revenues_per_day.csv.gz
           asset_name: revenues_per_day.csv.gz
           asset_content_type: application/gzip
-      # TODO: limit to scheduled events
       - name: Commit images
+        if: github.event_name == 'schedule'      
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -96,8 +96,8 @@ jobs:
           git rebase main
           git add images
           git commit -m "Publish tracker for $DATE"
-      # TODO: limit to scheduled events
       - name: Publish images changes
+        if: github.event_name == 'schedule'      
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
