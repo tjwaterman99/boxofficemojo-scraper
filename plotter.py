@@ -1,8 +1,11 @@
 import os
+import sys
 
 import pandas as pd
 import matplotlib.pyplot as plt
 import sqlalchemy as sa
+
+output_path = sys.argv[1]
 
 host = os.environ['PGHOST']
 user = os.environ['PGUSER']
@@ -27,4 +30,4 @@ plot.set_title(f"US Film Revenues Tracker: 2019-01-01 to {yoy.date.max().date()}
 plot.set_xlabel("Day of year")
 plot.set_ylabel("Revenue ($), 30 day rolling average")
 fig = plot.get_figure()
-fig.savefig('tracker.svg', format='svg')
+fig.savefig(output_path, format='svg')
