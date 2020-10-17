@@ -1,4 +1,6 @@
-![US box office revenue tracker](https://github.com/tjwaterman99/boxofficemojo-scraper/blob/images/images/tracker.svg?raw=true)
+<p align="center">
+    <img src="https://github.com/tjwaterman99/boxofficemojo-scraper/blob/images/images/tracker.svg?raw=true"></img>
+</p>
 
 # US Domestic box office film revenues
 
