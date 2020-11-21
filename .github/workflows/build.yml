@@ -5,6 +5,9 @@ on:
     - cron: "31 8 * * *"
   push:
 
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true 
+
 jobs:
   build-latest:
     runs-on: ubuntu-latest
