@@ -5,6 +5,9 @@ on:
     - cron: "23 8 * * *"
   workflow_dispatch:
 
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
 jobs:
   scrape-latest:
     runs-on: ubuntu-latest
