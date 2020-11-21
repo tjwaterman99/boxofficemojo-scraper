@@ -1,2 +1,3 @@
 venv/
 .env.local
+pythonenv3.8/
