@@ -74,3 +74,27 @@ Build the dbt models.
 ```sh
 dbt run --project-dir $PWD/dbt --profiles-dir $PWD/.dbt
 ```
+
+### Rebuilding
+
+Parsed data is saved each day in the `parsed.json` file by a github actions workflow. To rebuild the project with new data,
+simply fetch the most recent commits on the `main` branch.
+
+```sh
+git pull
+```
+
+Then rebuild the `raw` schema and reinsert the `parsed.json` data, and rebuild the dbt models.
+
+```sh
+psql -f schema.sql
+psql -c "\copy raw.boxofficemojo_revenues from $PWD/parsed.json
+dbt run --project-dir $PWD/dbt --profiles-dir $PWD/.dbt
+dbt test --project-dir $PWD/dbt --profiles-dir $PWD/.dbt
+```
+
+To rebuild the `parsed.json` file from scratch, use the `parser.py` script.
+
+```sh
+python parser.py parse-all > parsed.json
+```
