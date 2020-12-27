@@ -24,11 +24,12 @@ jobs:
       - name: Set env vars
         run: |
           echo "DATE=$(python -c 'import datetime as dt; print((dt.datetime.now() - dt.timedelta(days=3)).date())')" >> $GITHUB_ENV
+      - name: Log env
+        run: env
       - name: Run Scraper
-        run: |
-          env
-          python scraper.py scrape $DATE
-          python parser.py parse $DATE >> parsed.json
+        run: python scraper.py scrape $DATE
+      - name: Run Parser
+        run: python parser.py parse $DATE >> parsed.json
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
