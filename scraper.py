@@ -1,4 +1,4 @@
-import os
+import time
 import pathlib
 import requests
 import fire
@@ -7,13 +7,17 @@ import gzip
 
 class Scraper(object):
 
-    boxofficemojo_url_template = "https://www.boxofficemojo.com/date/{date}/"
+    boxofficemojo_url_template = "https://www.boxofficemojo.com/date/{date}/doesnotexist"
     data_dir = pathlib.Path('data') / 'dates'
-    
-    def scrape(self, date):
+    max_retries = 6
+
+    def scrape(self, date, retries=max_retries):
         """
         Pull data for a specific date and write to the data/dates directory
         """
+
+        if retries <= 0:
+            raise AttributeError(f"Fail: Max retries exceeded when scraping {date}.")
 
         url = self.boxofficemojo_url_template.format(date=date)
         resp = requests.get(url)
@@ -23,7 +27,10 @@ class Scraper(object):
                 o.write(resp.content)
             print(f"Okay: {date}")
         else:
-            print(f"Fail: {date}")
+            time_to_sleep = 2 ** (self.max_retries - retries)
+            print(f"Fail: {date} [status_code={resp.status_code}]. Retries left: {retries}. Waiting {time_to_sleep} seconds until retrying.")
+            time.sleep(time_to_sleep)
+            self.scrape(date, retries=retries-1)
 
 
 if __name__  == "__main__":
