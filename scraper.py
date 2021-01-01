@@ -7,7 +7,7 @@ import gzip
 
 class Scraper(object):
 
-    boxofficemojo_url_template = "https://www.boxofficemojo.com/date/{date}/doesnotexist"
+    boxofficemojo_url_template = "https://www.boxofficemojo.com/date/{date}"
     data_dir = pathlib.Path('data') / 'dates'
     max_retries = 6
 
